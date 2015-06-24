@@ -1,6 +1,10 @@
 package ws;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
+import ws.beans.User;
+
+import java.util.List;
 
 /**
  * <p>Title:ws</p>
@@ -19,10 +23,23 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @org.springframework.web.bind.annotation.RestController
 public class RestController {
 
+  @Autowired
+  ws.dao.TelosWSDaoImpl daoImpl;
+
+
 
   @RequestMapping("/greeting")
   public String greeting() {
     return "Hello World ";
+  }
+
+
+
+  @RequestMapping("/findUser")
+  public List<User> findUser(String userName, String password) {
+
+    return daoImpl.findUser(userName, password);
+
   }
 
 
