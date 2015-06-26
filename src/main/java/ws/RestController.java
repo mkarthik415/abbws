@@ -39,6 +39,21 @@ public class RestController {
     return daoImpl.findUser(userName, password);
   }
 
+  @RequestMapping("/getDBStatus")
+  public String getDBStatus() {
+
+     if(daoImpl.findUser("test", "test") != null)
+     {
+       if (daoImpl.findUser("test", "test").size() >0)
+         return "true";
+       else
+       {
+         return "false";
+       }
+     }
+    return "false";
+  }
+
   @RequestMapping("/runningJobs")
   public List<Job> runningJobs() {
 
