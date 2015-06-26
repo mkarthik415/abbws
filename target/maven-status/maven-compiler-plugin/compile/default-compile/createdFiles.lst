@@ -1,7 +1,6 @@
 ws\mapping\UserMapper.class
 ws\ServletInitializer.class
 ws\dao\TelosWSDao.class
+ws\beans\Job.class
 ws\beans\User.class
 ws\dao\TelosWSDaoImpl.class
-ws\RestController.class
-ws\WsApplication.class

@@ -11,6 +11,7 @@ import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.ServletContextAware;
+import ws.beans.Job;
 import ws.beans.User;
 
 import javax.servlet.ServletContext;
@@ -28,10 +29,13 @@ public class TelosWSDaoImpl implements TelosWSDao,ServletContextAware {
 
     @Value( "${GET_USER_SQL}" )
     private String GET_USER_SQL;
+    @Value( "${GET_RUNNING_JOBS_SQL}" )
+    private String GET_RUNNING_JOBS_SQL;
 
     private final JdbcTemplate jdbcTemplate;
     private final NamedParameterJdbcTemplate namedParameterJdbcTemplate;
     private List<User> returnUsers = null;
+    private List<Job> returnJobs = null;
     private ServletContext servletContext;
 
     @Autowired
@@ -40,6 +44,7 @@ public class TelosWSDaoImpl implements TelosWSDao,ServletContextAware {
         this.jdbcTemplate = jdbcTemplate;
         this.namedParameterJdbcTemplate = namedParameterJdbcTemplate;
     }
+
 
     @Override
     public List<User> findUser(final String user, final String password) {
@@ -62,6 +67,26 @@ public class TelosWSDaoImpl implements TelosWSDao,ServletContextAware {
             return null;
         }
         return returnUsers;
+    }
+
+    @Override
+    public List<Job> runningJobs() {
+
+        logger.debug("inside runningJobs method");
+
+        logger.debug("before runningJobs query being executed");
+        try {
+            returnJobs = namedParameterJdbcTemplate.query(
+                    GET_RUNNING_JOBS_SQL, new ws.mapping.JobsRecordMapper());
+            logger.debug("After query being executed"
+                    + returnJobs.get(0).getJob_num());
+            logger.debug("After query being executed"
+                    + returnJobs.get(0).getJob_nme());
+        } catch (Exception ex) {
+            logger.info("Jobs Not Found ", ex);
+            return null;
+        }
+        return returnJobs;
     }
 
 

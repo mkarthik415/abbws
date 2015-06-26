@@ -27,20 +27,21 @@ public class RestController {
   ws.dao.TelosWSDaoImpl daoImpl;
 
 
-
   @RequestMapping("/greeting")
   public String greeting() {
     return "Hello World ";
   }
 
-
-
   @RequestMapping("/findUser")
   public List<User> findUser(String userName, String password) {
 
     return daoImpl.findUser(userName, password);
-
   }
 
+  @RequestMapping("/runningJobs")
+  public List<User> runningJobs(String userName, String password) {
+
+    return daoImpl.runningJobs(userName, password);
+  }
 
 }
