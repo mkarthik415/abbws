@@ -1,11 +1,16 @@
 package ws;
 
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import ws.beans.Job;
 import ws.beans.JobCount;
 import ws.beans.User;
 
+import java.io.IOException;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.List;
 
 /**
@@ -27,6 +32,9 @@ public class RestController {
 
   @Autowired
   ws.dao.TelosWSDaoImpl daoImpl;
+
+
+  final org.slf4j.Logger logger = LoggerFactory.getLogger(RestController.class);
 
 
   @RequestMapping("/greeting")
@@ -52,6 +60,40 @@ public class RestController {
          return "false";
        }
      }
+    return "false";
+  }
+
+  @RequestMapping("/getAppStatus")
+  public String getAppStatus() throws IOException {
+    HttpURLConnection connection = null;
+    Integer code = null;
+    try {
+      URL u = new URL("https://www.google.com/");
+      connection = (HttpURLConnection) u.openConnection();
+      connection.setRequestMethod("HEAD");
+      code = connection.getResponseCode();
+      System.out.println("" + code);
+      // You can determine on HTTP return code received. 200 is success.
+    } catch (MalformedURLException e) {
+      logger.info("URL google ", e);
+      // TODO Auto-generated catch block
+      e.printStackTrace();
+      return "false";
+    } catch (IOException e) {
+      logger.info("URL google ", e);
+      e.printStackTrace();
+      return "false";
+    } finally {
+      if (connection != null) {
+        connection.disconnect();
+      }
+    }
+
+    if(code == 200)
+    {
+      return "true";
+    }
+    else
     return "false";
   }
 
