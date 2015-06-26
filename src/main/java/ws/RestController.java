@@ -3,6 +3,7 @@ package ws;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import ws.beans.Job;
+import ws.beans.JobCount;
 import ws.beans.User;
 
 import java.util.List;
@@ -60,4 +61,9 @@ public class RestController {
     return daoImpl.runningJobs();
   }
 
+  @RequestMapping("/jobStats")
+  public List<JobCount> jobStats() {
+
+    return daoImpl.jobStats(10);
+  }
 }

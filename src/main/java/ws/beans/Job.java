@@ -12,6 +12,7 @@ public class Job {
     private String job_nme;
     private String run_status_cd;
 
+
     public Job(int job_num, String job_nme, String run_status_cd, java.sql.Date start_dt_gmt, int seconds) {
         this.job_num = job_num;
         this.job_nme = job_nme;

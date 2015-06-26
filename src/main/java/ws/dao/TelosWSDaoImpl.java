@@ -12,6 +12,7 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.ServletContextAware;
 import ws.beans.Job;
+import ws.beans.JobCount;
 import ws.beans.User;
 
 import javax.servlet.ServletContext;
@@ -31,11 +32,14 @@ public class TelosWSDaoImpl implements TelosWSDao,ServletContextAware {
     private String GET_USER_SQL;
     @Value( "${GET_RUNNING_JOBS_SQL}" )
     private String GET_RUNNING_JOBS_SQL;
+    @Value("$GET_JOB_STATS_SQL")
+    private String GET_JOB_STATS_SQL;
 
     private final JdbcTemplate jdbcTemplate;
     private final NamedParameterJdbcTemplate namedParameterJdbcTemplate;
     private List<User> returnUsers = null;
     private List<Job> returnJobs = null;
+    private List<JobCount> returnJobCount = null;
     private ServletContext servletContext;
 
     @Autowired
@@ -83,12 +87,32 @@ public class TelosWSDaoImpl implements TelosWSDao,ServletContextAware {
             logger.debug("After query being executed"
                     + returnJobs.get(0).getJob_nme());
         } catch (Exception ex) {
-            logger.info("Jobs Not Found ", ex);
+            logger.info("Running Jobs Not Found ", ex);
             return null;
         }
         return returnJobs;
     }
 
+
+    @Override
+    public List<JobCount> jobStats(Integer days) {
+
+        logger.debug("inside jobStats method");
+
+        logger.debug("before jobStats query being executed");
+        try {
+            returnJobCount = namedParameterJdbcTemplate.query(
+                    GET_JOB_STATS_SQL,new ws.mapping.JobsCountMapper());
+            logger.debug("After query being executed"
+                    + returnJobCount.get(0).getJob_num());
+            logger.debug("After query being executed"
+                    + returnJobCount.get(0).getJob_nme());
+        } catch (Exception ex) {
+            logger.info("Statistics Not Found ", ex);
+            return null;
+        }
+        return returnJobCount;
+    }
 
 //    @Override
 //    public Integer logIn(String user, String password) {
