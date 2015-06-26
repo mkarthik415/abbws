@@ -2,6 +2,7 @@ package ws;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
+import ws.beans.Job;
 import ws.beans.User;
 
 import java.util.List;
@@ -39,9 +40,9 @@ public class RestController {
   }
 
   @RequestMapping("/runningJobs")
-  public List<User> runningJobs(String userName, String password) {
+  public List<Job> runningJobs() {
 
-    return daoImpl.runningJobs(userName, password);
+    return daoImpl.runningJobs();
   }
 
 }
